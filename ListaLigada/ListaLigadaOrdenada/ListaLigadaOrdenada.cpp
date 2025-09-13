@@ -31,7 +31,7 @@ void menu()
 	int op = 0;
 	while (op != 7) {
 		system("cls"); // somente no windows
-		cout << "Menu Lista Ligada";
+		cout << "Menu Lista Ligada Ordenada";
 		cout << endl << endl;
 		cout << "1 - Inicializar Lista \n";
 		cout << "2 - Exibir quantidade de elementos \n";
@@ -131,23 +131,98 @@ void inserirElemento()
 	}
 	else
 	{
-		// procura o final da lista
-		NO* aux = primeiro;
-		while (aux->prox != NULL) {
-			aux = aux->prox;
+		NO* atual = primeiro;
+		NO* anterior = NULL;
+
+		while (atual != NULL && atual->valor < novo->valor) {
+
+			anterior = atual;
+			atual = atual->prox;
 		}
-		aux->prox = novo;
+
+		if (atual != NULL && atual->valor == novo->valor) {
+
+			cout << "O elemento ja existe na lista \n";
+			free(novo);
+
+		}
+
+		else {
+			if (anterior == NULL) {
+				primeiro = novo;
+			}
+
+			else {
+				anterior->prox = novo;
+				novo->prox = atual;
+			}
+		}
 	}
 }
 
 void excluirElemento()
 {
+	int numero;
 
+	cout << "Digite o numero a ser excluido: ";
+	cin >> numero;
+
+	if (posicaoElemento(numero) == NULL) {
+		cout << "NAO ENCONTRADO" << endl;
+	}
+
+	else if (primeiro->valor == numero) {
+		NO* excluir = primeiro;
+		primeiro = primeiro->prox;
+		free(excluir);
+		cout << "Elemento excluido." << endl;
+	}
+
+	else {
+		NO* atual = posicaoElemento(numero);
+		NO* anterior = NULL;
+
+		while (aux != atual) {
+			anterior = aux;
+			aux = aux->prox;
+		}
+
+		anterior->prox = atual->prox;
+		free(atual);
+		cout << "Elemento excluido." << endl;
+	}
 }
 
 void buscarElemento()
 {
+	int numero;
 
+	cout << "Digite o elemento a ser buscado: ";
+	cin >> numero;
+	
+	if (primeiro == NULL) {
+		cout << "A lista está vazia" << endl;
+	}
+
+	else {
+
+		NO* aux = primeiro;
+		while (aux->prox != NULL) {
+			if (aux->valor == numero) {
+				cout << "ENCONTRADO" << endl;
+				return;
+			}
+
+			else if (aux->valor > numero) {
+				cout << "ELEMENTO NAO ENCONTRADO" << endl;
+				return;
+			}
+			else {
+				cout << "ELEMENTO NAO ENCONTRADO" << endl;
+			}
+		}
+
+	}
 }
 
 
